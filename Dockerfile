@@ -65,11 +65,11 @@ RUN apt update && apt upgrade -y && \
 RUN pip3 install --upgrade pip setuptools
 
 # Copy Python Requirements to /root/DazaiRobot
-RUN git clone https://github.com/Anonymous-068/DazaiRobot /root/DazaiRobot 
-WORKDIR /root/DazaiRobot
+RUN git clone https://github.com/Anjlnobita/Hinatahyuga /root/Hinatahyuga
+WORKDIR /root/Hinatahyuga
 
-#Copy config file to /root/DazaiRobot/DazaiRobot
-COPY ./DazaiRobot/config.py ./DazaiRobot/config.py* /root/DazaiRobot/DazaiRobot/
+#Copy config file to /root/Hinatahyuga/Hinatahyuga
+COPY ./Hinatahyuga/config.py ./Hinatahyuga/config.py* /root/Hinatahyuga/Hinatahyuga/
 
 ENV PATH="/home/bot/bin:$PATH"
 
@@ -77,4 +77,4 @@ ENV PATH="/home/bot/bin:$PATH"
 RUN pip3 install -U -r requirements.txt
 
 # Starting Worker
-CMD ["python3","-m","DazaiRobot"]
+CMD ["python3","-m","Hinatahyuga"]
