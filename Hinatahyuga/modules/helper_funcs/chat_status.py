@@ -6,7 +6,7 @@ from cachetools import TTLCache
 from telegram import Chat, ChatMember, ParseMode, Update
 from telegram.ext import CallbackContext
 
-from DazaiRobot import (
+from Hinatahyuga import (
     DEL_CMDS,
     DEMONS,
     DEV_USERS,
