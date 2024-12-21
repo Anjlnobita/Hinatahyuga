@@ -2,11 +2,8 @@ class Config(object):
     LOGGER = True
 
 
-    API_ID = 
-    API_HASH = ""
-
-
-    AI_API_KEY = "4ac088d9541a4df292f67b41c7d1aa96"
+    API_ID = 20650066
+    API_HASH = "7a4f8ed638f1369a40693574c2835217"
 
     CASH_API_KEY = ""  # Get this value for currency converter from https://www.alphavantage.co/support/#api-key
 
