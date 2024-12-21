@@ -64,7 +64,7 @@ RUN apt update && apt upgrade -y && \
 # Pypi package Repo upgrade
 RUN pip3 install --upgrade pip setuptools
 
-# Copy Python Requirements to /root/DazaiRobot
+# Copy Python Requirements to /root/Hinatahyuga
 RUN git clone https://github.com/Anjlnobita/Hinatahyuga /root/Hinatahyuga
 WORKDIR /root/Hinatahyuga
 
