@@ -36,8 +36,8 @@ if ENV:
     API_HASH = os.environ.get("API_HASH", None)
     ALLOW_CHATS = os.environ.get("ALLOW_CHATS", True)
     ALLOW_EXCL = os.environ.get("ALLOW_EXCL", False)
-    CASH_API_KEY = os.environ.get("CASH_API_KEY", None)
-    DB_URI = os.environ.get("DATABASE_URL")
+   
+    DB_URI = os.environ.get("MONGO_DB_URI")
     DEL_CMDS = bool(os.environ.get("DEL_CMDS", False))
     EVENT_LOGS = os.environ.get("EVENT_LOGS", None)
     INFOPIC = bool(os.environ.get("INFOPIC", "True"))
@@ -45,16 +45,15 @@ if ENV:
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
     START_IMG = os.environ.get(
-        "START_IMG", "https://telegra.ph/file/40eb1ed850cdea274693e.jpg"
+        "START_IMG", "https://envs.sh/kRs.jpg"
     )
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", True))
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "DevilsHeavenMF")
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TEMP_DOWNLOAD_DIRECTORY", "./")
     TOKEN = os.environ.get("TOKEN", None)
-    TIME_API_KEY = os.environ.get("TIME_API_KEY", None)
+    
     WORKERS = int(os.environ.get("WORKERS", 8))
-    ARQ_API_URL = os.environ.get("ARQ_API_URL", "http://thearq.tech?")
-    ARQ_API_KEY = os.environ.get("ARQ_API_KEY", "FZPYYN-EKAYFX-RNPLEJ-DRVAPH-ARQ")    
+    
 
     try:
         OWNER_ID = int(os.environ.get("OWNER_ID", None))
@@ -94,7 +93,7 @@ else:
     API_HASH = Config.API_HASH
     ALLOW_CHATS = Config.ALLOW_CHATS
     ALLOW_EXCL = Config.ALLOW_EXCL
-    CASH_API_KEY = Config.CASH_API_KEY
+    
     DB_URI = Config.MONGO_DB_URI
     DEL_CMDS = Config.DEL_CMDS
     EVENT_LOGS = Config.EVENT_LOGS
@@ -107,10 +106,8 @@ else:
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     TEMP_DOWNLOAD_DIRECTORY = Config.TEMP_DOWNLOAD_DIRECTORY
     TOKEN = Config.TOKEN
-    TIME_API_KEY = Config.TIME_API_KEY
     WORKERS = Config.WORKERS
-    ARQ_API_KEY = Config.ARQ_API_KEY
-    ARQ_API_URL = Config.ARQ_API_URL 
+  
 
     try:
         OWNER_ID = int(Config.OWNER_ID)
@@ -161,9 +158,7 @@ BOT_ID = dispatcher.bot.id
 BOT_NAME = dispatcher.bot.first_name
 BOT_USERNAME = dispatcher.bot.username
 
-# ARQ Client
-print("[INFO]: INITIALIZING ARQ CLIENT...")
-arq = ARQ(ARQ_API_URL, ARQ_API_KEY, aiohttpsession)
+
 
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
@@ -172,7 +167,7 @@ DEMONS = list(DEMONS)
 TIGERS = list(TIGERS)
 
 # Load at end to ensure all prev variables have been set
-from DazaiRobot.modules.helper_funcs.handlers import (
+from Hinatahyuga.modules.helper_funcs.handlers import (
     CustomCommandHandler,
     CustomMessageHandler,
     CustomRegexHandler,
