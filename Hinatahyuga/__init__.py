@@ -4,7 +4,6 @@ import sys
 import time
 from queue import Queue
 
-
 import telegram.ext as tg
 from aiohttp import ClientSession
 from pyrogram import Client, errors
@@ -52,7 +51,7 @@ if ENV:
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "DevilsHeavenMF")
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TEMP_DOWNLOAD_DIRECTORY", "./")
     TOKEN = os.environ.get("TOKEN", None)
-    
+
     worker_count = int(os.environ.get("WORKERS", 8)) 
 
     try:
@@ -138,18 +137,13 @@ else:
     except ValueError:
         raise Exception("Your whitelisted users list does not contain valid integers.")
 
-
 DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6777860063)
 
-
-
 update_queue = Queue()
 updater = tg.Updater(TOKEN, update_queue=update_queue)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
-
-
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
 dispatcher = updater.dispatcher
@@ -159,7 +153,6 @@ print("[INFO]: Getting Bot Info...")
 BOT_ID = dispatcher.bot.id
 BOT_NAME = dispatcher.bot.first_name
 BOT_USERNAME = dispatcher.bot.username
-
 
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
