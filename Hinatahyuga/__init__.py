@@ -2,7 +2,6 @@ import logging
 import os
 import sys
 import time
-from queue import Queue
 
 import telegram.ext as tg
 from aiohttp import ClientSession
@@ -143,8 +142,8 @@ DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6171176459)
 
 
-update_queue = Queue()
-updater = tg.Updater(TOKEN, update_queue=update_queue, workers=worker_count)
+
+updater = tg.Updater(TOKEN, workers=WORKERS, use_context=True)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
