@@ -50,9 +50,9 @@ if ENV:
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", True))
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "DevilsHeavenMF")
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TEMP_DOWNLOAD_DIRECTORY", "./")
-    TOKEN = os.environ.get("TOKEN", None)
+    worker_count = os.environ.get("TOKEN", None)
     
-    WORKERS = int(os.environ.get("WORKERS", 8))
+    worker_count = int(os.environ.get("WORKERS", 8))
     
 
     try:
@@ -106,7 +106,7 @@ else:
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     TEMP_DOWNLOAD_DIRECTORY = Config.TEMP_DOWNLOAD_DIRECTORY
     TOKEN = Config.TOKEN
-    WORKERS = Config.WORKERS
+    worker_count = Config.WORKERS
   
 
     try:
