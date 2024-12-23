@@ -36,7 +36,6 @@ if ENV:
     API_HASH = os.environ.get("API_HASH", None)
     ALLOW_CHATS = os.environ.get("ALLOW_CHATS", True)
     ALLOW_EXCL = os.environ.get("ALLOW_EXCL", False)
-   
     DB_URI = os.environ.get("MONGO_DB_URI")
     DEL_CMDS = bool(os.environ.get("DEL_CMDS", False))
     EVENT_LOGS = os.environ.get("EVENT_LOGS", None)
@@ -45,15 +44,14 @@ if ENV:
     MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
     START_IMG = os.environ.get(
-        "START_IMG", "https://envs.sh/kRs.jpg"
+        "START_IMG", "https://telegra.ph/file/40eb1ed850cdea274693e.jpg"
     )
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", True))
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "DevilsHeavenMF")
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TEMP_DOWNLOAD_DIRECTORY", "./")
-    worker_count = os.environ.get("TOKEN", None)
+    TOKEN = os.environ.get("TOKEN", None)
     
-    worker_count = int(os.environ.get("WORKERS", 8))
-    
+    worker_count = int(os.environ.get("WORKERS", 8)) 
 
     try:
         OWNER_ID = int(os.environ.get("OWNER_ID", None))
@@ -93,7 +91,6 @@ else:
     API_HASH = Config.API_HASH
     ALLOW_CHATS = Config.ALLOW_CHATS
     ALLOW_EXCL = Config.ALLOW_EXCL
-    
     DB_URI = Config.MONGO_DB_URI
     DEL_CMDS = Config.DEL_CMDS
     EVENT_LOGS = Config.EVENT_LOGS
@@ -106,8 +103,7 @@ else:
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     TEMP_DOWNLOAD_DIRECTORY = Config.TEMP_DOWNLOAD_DIRECTORY
     TOKEN = Config.TOKEN
-    worker_count = Config.WORKERS
-  
+    worker_count = Config.WORKERS 
 
     try:
         OWNER_ID = int(Config.OWNER_ID)
@@ -143,11 +139,10 @@ else:
 
 DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
-DEV_USERS.add(6777860063)
+DEV_USERS.add(6171176459)
 
 
-
-updater = tg.Updater(TOKEN, workers=worker_count, use_context=True)
+updater = tg.Updater(TOKEN, use_context=True)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
@@ -159,7 +154,8 @@ BOT_ID = dispatcher.bot.id
 BOT_NAME = dispatcher.bot.first_name
 BOT_USERNAME = dispatcher.bot.username
 
-
+# ARQ Client
+print("[INFO]: INITIALIZING ARQ CLIENT...")
 
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
