@@ -145,7 +145,7 @@ DEV_USERS.add(6777860063)
 
 # Initialize Telegram clients
 update_queue = Queue()
-updater = tg.Updater(TOKEN, use_context=True, request_kwargs={'queue': update_queue})
+updater = tg.Updater(TOKEN, request_kwargs={'queue': update_queue})
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
