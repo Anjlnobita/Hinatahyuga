@@ -141,7 +141,10 @@ DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6777860063)
 
-updater = tg.Updater(TOKEN)
+
+
+update_queue = Queue()
+updater = tg.Updater(TOKEN, update_queue=update_queue)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 
