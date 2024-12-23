@@ -141,7 +141,7 @@ DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6777860063)
 
-updater = tg.Updater(TOKEN, worker_count=worker_count, use_context=True)
+updater = tg.Updater(TOKEN, use_context=True)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 
@@ -155,8 +155,6 @@ BOT_ID = dispatcher.bot.id
 BOT_NAME = dispatcher.bot.first_name
 BOT_USERNAME = dispatcher.bot.username
 
-# ARQ Client
-print("[INFO]: INITIALIZING ARQ CLIENT...")
 
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
