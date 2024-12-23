@@ -139,10 +139,10 @@ else:
 
 DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
-DEV_USERS.add(6171176459)
+DEV_USERS.add(6777860063)
 
 updater = tg.Updater(TOKEN, worker_count=worker_count, use_context=True)
-telethn = TelegramClient("Dazai", API_ID, API_HASH)
+telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 
 
