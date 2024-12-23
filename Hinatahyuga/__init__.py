@@ -4,9 +4,10 @@ import sys
 import time
 from queue import Queue
 
-import telegram.ext as tg
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
 from aiohttp import ClientSession
-from pyrogram import Client, errors
+from pyrogram import Client as PyroClient
 from telethon import TelegramClient
 
 StartTime = time.time()
@@ -145,10 +146,10 @@ DEV_USERS.add(6777860063)
 
 # Initialize Telegram clients
 update_queue = Queue()
-updater = tg.Updater(TOKEN, update_queue=update_queue)
+updater = Updater(TOKEN, update_queue=update_queue)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
-pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
+pbot = PyroClient("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
 dispatcher = updater.dispatcher
 aiohttpsession = ClientSession()
 
@@ -175,3 +176,14 @@ from Hinatahyuga.modules.helper_funcs.handlers import (
 tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
+
+# Example handler
+def start(update: Update, context: CallbackContext):
+    update.message.reply_text('Hello, this is your bot!')
+
+# Add the handler to the dispatcher
+dispatcher.add_handler(CommandHandler("start", start))
+
+# Start the bot
+updater.start_polling()
+updater.idle()
