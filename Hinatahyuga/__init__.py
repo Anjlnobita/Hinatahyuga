@@ -142,7 +142,7 @@ DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6171176459)
 
 
-updater = tg.Updater(TOKEN, use_context=True)
+updater = tg.Updater(TOKEN)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
