@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 import time
-from queue import queue
+from queue import Queue
 
 import telegram.ext as tg
 from aiohttp import ClientSession
