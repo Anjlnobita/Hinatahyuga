@@ -2,17 +2,14 @@ import logging
 import os
 import sys
 import time
-from queue import Queue
 
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
-from aiohttp import ClientSession
-from pyrogram import Client as PyroClient
+import telegram.ext as tg
+from pyrogram import Client, errors
 from telethon import TelegramClient
 
 StartTime = time.time()
 
-# Enable logging
+# enable logging
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     handlers=[logging.FileHandler("log.txt"), logging.StreamHandler()],
@@ -21,30 +18,32 @@ logging.basicConfig(
 
 logging.getLogger("apscheduler").setLevel(logging.ERROR)
 logging.getLogger("telethon").setLevel(logging.ERROR)
+logging.getLogger("pymongo").setLevel(logging.ERROR)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("pyrate_limiter").setLevel(logging.ERROR)
 LOGGER = logging.getLogger(__name__)
 
-# If Python version < 3.6, stop the bot
-if sys.version_info < (3, 6):
+# if version < 3.6, stop bot.
+if sys.version_info[0] < 3 or sys.version_info[1] < 6:
     LOGGER.error(
-        "You MUST have a Python version of at least 3.6! Multiple features depend on this. Bot quitting."
+        "You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting."
     )
-    sys.exit(1)
+    quit(1)
 
-# Read environment variables or config
 ENV = bool(os.environ.get("ENV", False))
 
 if ENV:
-    API_ID = int(os.environ.get("API_ID", 0))
-    API_HASH = os.environ.get("API_HASH", "")
-    ALLOW_CHATS = bool(os.environ.get("ALLOW_CHATS", True))
-    ALLOW_EXCL = bool(os.environ.get("ALLOW_EXCL", False))
-    DB_URI = os.environ.get("MONGO_DB_URI", "")
+    API_ID = int(os.environ.get("API_ID", None))
+    API_HASH = os.environ.get("API_HASH", None)
+    ALLOW_CHATS = os.environ.get("ALLOW_CHATS", True)
+    ALLOW_EXCL = os.environ.get("ALLOW_EXCL", False)
+    CASH_API_KEY = os.environ.get("CASH_API_KEY", None)
+    DB_URI = os.environ.get("DATABASE_URL")
     DEL_CMDS = bool(os.environ.get("DEL_CMDS", False))
-    EVENT_LOGS = os.environ.get("EVENT_LOGS", "")
+    EVENT_LOGS = os.environ.get("EVENT_LOGS", None)
     INFOPIC = bool(os.environ.get("INFOPIC", "True"))
     LOAD = os.environ.get("LOAD", "").split()
-    MONGO_DB_URI = os.environ.get("MONGO_DB_URI", "")
+    MONGO_DB_URI = os.environ.get("MONGO_DB_URI", None)
     NO_LOAD = os.environ.get("NO_LOAD", "").split()
     START_IMG = os.environ.get(
         "START_IMG", "https://telegra.ph/file/40eb1ed850cdea274693e.jpg"
@@ -52,12 +51,12 @@ if ENV:
     STRICT_GBAN = bool(os.environ.get("STRICT_GBAN", True))
     SUPPORT_CHAT = os.environ.get("SUPPORT_CHAT", "DevilsHeavenMF")
     TEMP_DOWNLOAD_DIRECTORY = os.environ.get("TEMP_DOWNLOAD_DIRECTORY", "./")
-    TOKEN = os.environ.get("TOKEN", "")
-
-    worker_count = int(os.environ.get("WORKERS", 8))
+    TOKEN = os.environ.get("TOKEN", None)
+    TIME_API_KEY = os.environ.get("TIME_API_KEY", None)
+    WORKERS = int(os.environ.get("WORKERS", 8))
 
     try:
-        OWNER_ID = int(os.environ.get("OWNER_ID", 0))
+        OWNER_ID = int(os.environ.get("OWNER_ID", None))
     except ValueError:
         raise Exception("Your OWNER_ID env variable is not a valid integer.")
 
@@ -88,13 +87,14 @@ if ENV:
         raise Exception("Your whitelisted users list does not contain valid integers.")
 
 else:
-    from Hinatahyuga.config import Development as Config
+    from FallenRobot.config import Development as Config
 
     API_ID = Config.API_ID
     API_HASH = Config.API_HASH
     ALLOW_CHATS = Config.ALLOW_CHATS
     ALLOW_EXCL = Config.ALLOW_EXCL
-    DB_URI = Config.MONGO_DB_URI
+    CASH_API_KEY = Config.CASH_API_KEY
+    DB_URI = Config.DATABASE_URL
     DEL_CMDS = Config.DEL_CMDS
     EVENT_LOGS = Config.EVENT_LOGS
     INFOPIC = Config.INFOPIC
@@ -106,7 +106,8 @@ else:
     SUPPORT_CHAT = Config.SUPPORT_CHAT
     TEMP_DOWNLOAD_DIRECTORY = Config.TEMP_DOWNLOAD_DIRECTORY
     TOKEN = Config.TOKEN
-    worker_count = Config.WORKERS
+    TIME_API_KEY = Config.TIME_API_KEY
+    WORKERS = Config.WORKERS
 
     try:
         OWNER_ID = int(Config.OWNER_ID)
@@ -139,51 +140,37 @@ else:
     except ValueError:
         raise Exception("Your whitelisted users list does not contain valid integers.")
 
-# Ensure OWNER_ID is added to special sets
+
 DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
-DEV_USERS.add(6777860063)
+DEV_USERS.add(1356469075)
 
-# Initialize Telegram clients
-update_queue = Queue()
-updater = Updater(TOKEN, update_queue=update_queue)
-telethn = TelegramClient("hinata", API_ID, API_HASH)
 
-pbot = PyroClient("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
+updater = tg.Updater(TOKEN, workers=WORKERS, use_context=True)
+telethn = TelegramClient("Fallen", API_ID, API_HASH)
+
+pbot = Client("FallenRobot", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
 dispatcher = updater.dispatcher
-aiohttpsession = ClientSession()
 
 print("[INFO]: Getting Bot Info...")
 BOT_ID = dispatcher.bot.id
 BOT_NAME = dispatcher.bot.first_name
 BOT_USERNAME = dispatcher.bot.username
 
-# Convert sets to lists
 DRAGONS = list(DRAGONS) + list(DEV_USERS)
 DEV_USERS = list(DEV_USERS)
 WOLVES = list(WOLVES)
 DEMONS = list(DEMONS)
 TIGERS = list(TIGERS)
 
-# Load custom handlers at the end to ensure all variables are set
-from Hinatahyuga.modules.helper_funcs.handlers import (
+# Load at end to ensure all prev variables have been set
+from FallenRobot.modules.helper_funcs.handlers import (
     CustomCommandHandler,
     CustomMessageHandler,
     CustomRegexHandler,
 )
 
-# Override default handlers with custom handlers
+# make sure the regex handler can take extra kwargs
 tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
-
-# Example handler
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text('Hello, this is your bot!')
-
-# Add the handler to the dispatcher
-dispatcher.add_handler(CommandHandler("start", start))
-
-# Start the bot
-updater.start_polling()
-updater.idle()
