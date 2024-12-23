@@ -143,9 +143,8 @@ DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(6171176459)
 
 
-
 update_queue = Queue()
-updater = tg.Updater(TOKEN, update_queue=update_queue)
+updater = tg.Updater(TOKEN, update_queue=update_queue, workers=worker_count)
 telethn = TelegramClient("hinata", API_ID, API_HASH)
 
 pbot = Client("Hinatahyuga", api_id=API_ID, api_hash=API_HASH, bot_token=TOKEN)
