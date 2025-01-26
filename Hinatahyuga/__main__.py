@@ -7,7 +7,7 @@ from typing import Optional
 import config
 
 
-from anjlnobita import (
+from Hinatahyuga import (
     LOGGER,
     dispatcher,
     telethn,
