@@ -16,7 +16,7 @@ from Hinatahyuga import (
 )
 
 from pyrogram import Client, filters
-from anjlnobita.plugins import ALL_MODULES
+from Hinatahyuga.modules import ALL_MODULES
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import (
